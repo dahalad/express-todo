@@ -1,3 +1,5 @@
+// import { User } from '../models/user';
+
 /**
  * Create users table.
  *
@@ -14,6 +16,7 @@ export function up(knex) {
     table.timestamp('updated_at').notNull();
     table.string('task').notNull();
     table.string('details').notNull();
+    table.integer('user_id').references('users.id');
   });
 }
 

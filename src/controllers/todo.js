@@ -29,12 +29,12 @@ router.post('/', todoValidator, (req, res, next) => {
 /**
  * GET /api/todos/id
  */
- router.get('/:id', (req, res, next) => {
-   todoService
-      .getTodo(req.params.id)
-      .then(data => res.json({ data }))
-      .catch(err => next(err));
- });
+router.get('/:id', (req, res, next) => {
+  todoService
+    .getTodo(req.params.id)
+    .then(data => res.json({ data }))
+    .catch(err => next(err));
+});
 
 /**
  * DELETE /api/todos/id
@@ -42,19 +42,19 @@ router.post('/', todoValidator, (req, res, next) => {
 
 router.delete('/:id', findTodo, (req, res, next) => {
   todoService
-      .deleteTodo(req.params.id)
-      .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
-      .catch(err => next(err))
+    .deleteTodo(req.params.id)
+    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
+    .catch(err => next(err));
 });
 
 /**
  * PUT /api/todos/id
  */
- router.put('/:id', findTodo, todoValidator, (req, res, next) => {
+router.put('/:id', findTodo, todoValidator, (req, res, next) => {
    todoService
-      .updateTodo(req.params.id, req.body)
-      .then(data => res.json({ data }))
-      .catch(err => next(err))
- });
+     .updateTodo(req.params.id, req.body)
+     .then(data => res.json({ data }))
+     .catch(err => next(err));
+});
 
 export default router;

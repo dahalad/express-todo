@@ -10,7 +10,10 @@ const SCHEMA = {
   details: Joi.string()
     .label('Details')
     .max(140)
-    .required()
+    .required(),
+  user_id: Joi.number().integer()
+      .label("User ID")
+      .required()
 };
 
 /**

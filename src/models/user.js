@@ -1,4 +1,5 @@
 import bookshelf from '../db';
+import Todo from './todo';
 
 const TABLE_NAME = 'users';
 
@@ -12,6 +13,10 @@ class User extends bookshelf.Model {
 
   get hasTimestamps() {
     return true;
+  }
+
+  todos() {
+    return this.hasMany(Todo);
   }
 }
 
