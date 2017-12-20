@@ -1,3 +1,5 @@
+import { encrypt } from '../utils/encrypt';
+
 /**
  * Seed users table.
  *
@@ -14,9 +16,18 @@ export function seed(knex, Promise) {
         // Inserts seed entries
         knex('users').insert({
           name: 'Saugat Acharya',
-          updated_at: new Date()
+          updated_at: new Date(),
+          username: 'saugat',
+          password: 'saugatbro',
+          email: 'saugat@ad.com'
         }),
-        knex('users').insert({ name: 'John Doe', updated_at: new Date() })
+        knex('users').insert({
+          name: 'Malla Dai',
+          updated_at: new Date(),
+          username: 'malla',
+          password: 'mallabro',
+          email: 'mall@ad.com'
+        })
       ]);
     });
 }

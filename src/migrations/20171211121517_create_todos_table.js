@@ -1,7 +1,5 @@
-// import { User } from '../models/user';
-
 /**
- * Create users table.
+ * Create todos table.
  *
  * @param  {object} knex
  * @return {Promise}
@@ -21,11 +19,11 @@ export function up(knex) {
 }
 
 /**
- * Drop users table.
+ * Drop todo table.
  *
  * @param  {object} knex
  * @return {Promise}
  */
 export function down(knex) {
-  return knex.schema.dropTable('todos');
+  return knex.schema.dropTable('todos').dropTable('tags_todos');
 }

@@ -1,5 +1,6 @@
 import bookshelf from '../db';
 import Todo from './todo';
+import Token from './token';
 
 const TABLE_NAME = 'users';
 
@@ -17,6 +18,10 @@ class User extends bookshelf.Model {
 
   todos() {
     return this.hasMany(Todo);
+  }
+
+  token() {
+    return this.hasMany(Token);
   }
 }
 

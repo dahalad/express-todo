@@ -6,6 +6,14 @@ const SCHEMA = {
   name: Joi.string()
     .label('Name')
     .max(90)
+    .required(),
+  username: Joi.string()
+    .label('Username')
+    .max(90)
+    .required(),
+  password: Joi.string()
+    .label('Password')
+    .max(90)
     .required()
 };
 

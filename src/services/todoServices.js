@@ -6,10 +6,18 @@ import Todo from '../models/todo';
  *
  * @return {Promise}
  */
-export function getAllTodos() {
-  return Todo.fetchAll({ withRelated: ['user'] });
+export function getAllTodos(user_id) {
+  return Todo.where({ user_id: user_id }).fetchPage({ withRelated: ['user', 'tags'] });
 }
 
+export function getSelectTodos(user_id, q) {
+  return Todo.query(qb => {
+    qb
+      .where({ user_id: user_id })
+      .where('details', 'LIKE', '%' + q + '%')
+      .orWhere('task', 'LIKE', '%' + q + '%');
+  }).fetchPage({ withRelated: ['tags', 'users'] });
+}
 
 /**
  * Get a todo
@@ -17,16 +25,15 @@ export function getAllTodos() {
  * @param {Number|String} id
  * @return {Promise}
  */
- export function getTodo(id) {
-   return new Todo({ id }).fetch({withRelated: ['user']}).then(todo => {
-     if (!todo) {
-       throw new Boom.notFound('Todo not found');
-     }
+export function getTodo(id) {
+  return new Todo({ id }).fetch({ withRelated: ['user', 'tags'] }).then(todo => {
+    if (!todo) {
+      throw new Boom.notFound('Todo not found');
+    }
 
-     return todo;
-   });
- }
-
+    return todo;
+  });
+}
 
 /**
  * Create new user.
@@ -34,8 +41,14 @@ export function getAllTodos() {
  * @param  {Object}  todo
  * @return {Promise}
  */
-export function createTodo(todo) {
-  return new Todo({ task: todo.task, details: todo.details, user_id: todo.user_id }).save().then(todo => todo.refresh());
+export function createTodo(todo, user_id) {
+  let tag = parseInt(todo.tags || 3);
+
+  return new Todo({ task: todo.task, details: todo.details, user_id: user_id }).save().then(todo => {
+    todo.tags().attach([tag]);
+
+    return todo.refresh();
+  });
 }
 
 /**
@@ -44,10 +57,12 @@ export function createTodo(todo) {
  * @param {Number|String} id
  * @return {Promise}
  */
- export function deleteTodo(id) {
-   return new Todo({ id }).fetch().then(todo => todo.destroy());
- }
-
+export function deleteTodo(id) {
+  return new Todo({ id })
+    .destroy()
+    .then(() => {})
+    .catch(err => console.log(err));
+}
 
 /**
  * Update a todos
@@ -56,6 +71,10 @@ export function createTodo(todo) {
  * @param {Todo}
  * @return {Promise}
  */
- export function updateTodo(id, todo) {
-   return new Todo({ id }).save({task: todo.task, details: todo.details, user_id: todo.user_id}).then(todo => todo.refresh())
- }
+export function updateTodo(id, todo) {
+  let tag = parseInt(todo.tags || 2);
+
+  return new Todo({ id }).save({ task: todo.task, details: todo.details, user_id: todo.user_id }).then(todo => {
+    todo.tags().attach([tag]);
+  });
+}

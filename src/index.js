@@ -41,7 +41,6 @@ app.use(express.static(path.join(__dirname, '/../public')));
 // API Routes
 app.use('/api', routes);
 
-
 // Error Middlewares
 app.use(errorHandler.genericErrorHandler);
 app.use(errorHandler.methodNotAllowed);

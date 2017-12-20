@@ -6,8 +6,8 @@ import User from '../models/user';
  *
  * @return {Promise}
  */
-export function getAllUsers() {
-  return User.fetchAll({ withRelated: ['todos'] });
+export function getAllUsers(user_id) {
+  return User.where({ id: user_id }).fetchAll({ withRelated: ['todos'] });
 }
 
 /**
@@ -33,7 +33,13 @@ export function getUser(id) {
  * @return {Promise}
  */
 export function createUser(user) {
-  return new User({ name: user.name }).save().then(user => user.refresh());
+  return new User({
+    name: user.name,
+    password: user.password,
+    username: user.username
+  })
+    .save()
+    .then(user => user.refresh());
 }
 
 /**
@@ -44,7 +50,13 @@ export function createUser(user) {
  * @return {Promise}
  */
 export function updateUser(id, user) {
-  return new User({ id }).save({ name: user.name }).then(user => user.refresh());
+  return new User({ id })
+    .save({
+      name: user.name,
+      username: user.username,
+      password: user.password
+    })
+    .then(user => user.refresh());
 }
 
 /**
